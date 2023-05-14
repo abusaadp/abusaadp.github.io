@@ -838,6 +838,78 @@
         return false;
     }
 
+    function onKeyDown(evt) {
+        if (!_sectionCount || _pause ||
+            evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
+            return;
+        }
+
+        var currentFocusedElement;
+        var preventDefault = function () {
+            evt.preventDefault();
+            evt.stopPropagation();
+            return false;
+        };
+
+        var direction = KEYMAPPING[evt.keyCode];
+        if (!direction) {
+            if (evt.keyCode == 13) {
+                currentFocusedElement = getCurrentFocusedElement();
+                if (currentFocusedElement && getSectionId(currentFocusedElement)) {
+                    if (!fireEvent(currentFocusedElement, 'enter-down')) {
+                        return preventDefault();
+                    }
+                }
+            }
+            return;
+        }
+
+        currentFocusedElement = getCurrentFocusedElement();
+        console.log(currentFocusedElement);
+
+        if (!currentFocusedElement) {
+            if (_lastSectionId) {
+                currentFocusedElement = getSectionLastFocusedElement(_lastSectionId);
+            }
+            if (!currentFocusedElement) {
+                focusSection();
+                return preventDefault();
+            }
+        }
+
+        var currentSectionId = getSectionId(currentFocusedElement);
+        if (!currentSectionId) {
+            return;
+        }
+
+        var willmoveProperties = {
+            direction: direction,
+            sectionId: currentSectionId,
+            cause: 'keydown'
+        };
+
+        if (fireEvent(currentFocusedElement, 'willmove', willmoveProperties)) {
+            focusNext(direction, currentFocusedElement, currentSectionId);
+        }
+
+        return preventDefault();
+    }
+
+    function onKeyUp(evt) {
+        if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
+            return;
+        }
+        if (!_pause && _sectionCount && evt.keyCode == 13) {
+            var currentFocusedElement = getCurrentFocusedElement();
+            if (currentFocusedElement && getSectionId(currentFocusedElement)) {
+                if (!fireEvent(currentFocusedElement, 'enter-up')) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                }
+            }
+        }
+    }
+
     function enterCustom() {
 
         var preventDefault = function () {
@@ -943,11 +1015,19 @@
     var SpatialNavigation = {
         init: function () {
             if (!_ready) {
+                window.addEventListener('keydown', onKeyDown);
+                window.addEventListener('keyup', onKeyUp);
+                window.addEventListener('focus', onFocus, true);
+                window.addEventListener('blur', onBlur, true);
                 _ready = true;
             }
         },
 
         uninit: function () {
+            window.removeEventListener('blur', onBlur, true);
+            window.removeEventListener('focus', onFocus, true);
+            window.removeEventListener('keyup', onKeyUp);
+            window.removeEventListener('keydown', onKeyDown);
             SpatialNavigation.clear();
             _idPool = 0;
             _ready = false;
