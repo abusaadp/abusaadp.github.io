@@ -482,10 +482,12 @@
   }
 
   function getCurrentFocusedElement() {
-    var activeElement = document.activeElement;
+      var activeElement = document.activeElement;
+      console.log("activeElement is ", activeElement);
     if (activeElement && activeElement !== document.body) {
       return activeElement;
     }
+      console.log("return null");
   }
 
   function extend(out) {
@@ -865,13 +867,15 @@
     }
 
       currentFocusedElement = getCurrentFocusedElement();
+      console.log(currentFocusedElement);
       
     if (!currentFocusedElement) {
       if (_lastSectionId) {
         currentFocusedElement = getSectionLastFocusedElement(_lastSectionId);
       }
       if (!currentFocusedElement) {
-        focusSection();
+          focusSection();
+          console.log("")
         return preventDefault();
       }
     }
@@ -891,8 +895,11 @@
       focusNext(direction, currentFocusedElement, currentSectionId);
     }
 
+      
       currentFocusedElement.style.background = "";
       currentFocusedElement.style.border = "";
+
+      console.log("background normal for ", currentFocusedElement);
 
 
     return preventDefault();
@@ -932,15 +939,11 @@
   function onFocus(evt) {
     var target = evt.target;
     
-    console.log(target);
-    
-    if(target != undefined) {
-      target.style.background = "yellow";
-      target.style.border = "thick solid #0000FF";
-    }
-    
+      
     if (target !== window && target !== document &&
         _sectionCount && !_duringFocusChange) {
+        target.style.background = "yellow";
+        target.style.border = "thick solid #0000FF";
       var sectionId = getSectionId(target);
       if (sectionId) {
         if (_pause) {
