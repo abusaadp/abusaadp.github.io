@@ -932,8 +932,12 @@
   function onFocus(evt) {
     var target = evt.target;
     
-    target.style.background = "yellow";
-    target.style.border = "thick solid #0000FF";
+    console.log(target);
+    
+    if(target != undefined) {
+      target.style.background = "yellow";
+      target.style.border = "thick solid #0000FF";
+    }
     
     if (target !== window && target !== document &&
         _sectionCount && !_duringFocusChange) {
