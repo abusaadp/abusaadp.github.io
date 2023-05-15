@@ -1,0 +1,70 @@
+<head>
+  <script src="https://abusaadp.github.io//js-spatial-navigation/spatial_navigation.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      // Initialize
+      SpatialNavigation.init();
+
+      // Define navigable elements (anchors and elements with "focusable" class).
+      SpatialNavigation.add({
+        selector: 'a, .focusable, button'
+      });
+
+      // Make the *currently existing* navigable elements focusable.
+      SpatialNavigation.makeFocusable();
+
+      // Focus the first navigable element.
+      SpatialNavigation.focus();
+    });
+  </script>
+  <style>
+    /* Add style to the focused elements */
+    :focus {
+      outline: none;
+    }
+  </style>
+</head>
+<script>  
+
+function up(){  
+    console.log("up");
+    SpatialNavigation.move("up");
+    SpatialNavigation.focus();
+}
+
+function down(){ 
+    console.log("down"); 
+    SpatialNavigation.move("down");
+    SpatialNavigation.focus();
+}
+
+function right(){
+    console.log("right"); 
+    SpatialNavigation.move("right");
+    SpatialNavigation.focus();
+}
+
+function left(){
+    console.log("left");
+    SpatialNavigation.move("left");
+    SpatialNavigation.focus();
+}
+
+function enter(){
+    console.log("enter"); 
+    SpatialNavigation.enterCustom();
+}
+
+</script>  
+<body>
+    <a href=https://www.google.com />Link 1</a>
+    <a href="#index">Link 2</a>
+    <div class="focusable">Div 1</div>
+    <div class="focusable">Div 2</div>
+
+    <button type="button" onclick="up()">Up</button>
+    <button type="button" onclick="down()">Down</button>
+    <button type="button" onclick="right()">Right</button>
+    <button type="button" onclick="left()">Left</button>
+    <button type="button" onclick="enter()">Enter</button>
+</body>
