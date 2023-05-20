@@ -938,6 +938,7 @@
 
   function onFocus(evt) {
     var target = evt.target;
+    console.log("onFocus ", target);
 
       if (target !== window && target !== document) {
           target.style.background = "yellow";
