@@ -485,6 +485,8 @@
       var activeElement = document.activeElement;
       console.log("activeElement is ", activeElement);
     if (activeElement && activeElement !== document.body) {
+      activeElement.style.background = "yellow";
+          activeElement.style.border = "thick solid #0000FF";
       return activeElement;
     }
       console.log("return null");
@@ -939,13 +941,7 @@
   function onFocus(evt) {
     var target = evt.target;
     console.log("onFocus ", target);
-
-      if (target !== window && target !== document) {
-          target.style.background = "yellow";
-          target.style.border = "thick solid #0000FF";
-      }
-      
-      
+    
     if (target !== window && target !== document &&
         _sectionCount && !_duringFocusChange) {
         
