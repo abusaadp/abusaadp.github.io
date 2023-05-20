@@ -748,6 +748,11 @@
   }
 
   function focusNext(direction, currentFocusedElement, currentSectionId) {
+    var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
+        if (prevElem !== null) {
+            prevElem.style.background = "";
+            prevElem.style.border = "";
+        }
     var extSelector =
       currentFocusedElement.getAttribute('data-sn-' + direction);
     currentFocusedElement.style.background = "yellow";
