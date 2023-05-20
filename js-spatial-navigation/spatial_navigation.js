@@ -485,8 +485,6 @@
       var activeElement = document.activeElement;
       console.log("activeElement is ", activeElement);
     if (activeElement && activeElement !== document.body) {
-      activeElement.style.background = "yellow";
-          activeElement.style.border = "thick solid #0000FF";
       return activeElement;
     }
       console.log("return null");
@@ -752,6 +750,8 @@
   function focusNext(direction, currentFocusedElement, currentSectionId) {
     var extSelector =
       currentFocusedElement.getAttribute('data-sn-' + direction);
+    currentFocusedElement.style.background = "yellow";
+    currentFocusedElement.style.border = "thick solid #0000FF";
     if (typeof extSelector === 'string') {
       if (extSelector === '' ||
           !focusExtendedSelector(extSelector, direction)) {
