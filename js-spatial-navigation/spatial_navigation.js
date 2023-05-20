@@ -994,19 +994,11 @@
   var SpatialNavigation = {
     init: function() {
       if (!_ready) {
-        window.addEventListener('keydown', onKeyDown);
-        window.addEventListener('keyup', onKeyUp);
-        window.addEventListener('focus', onFocus, true);
-        window.addEventListener('blur', onBlur, true);
         _ready = true;
       }
     },
 
     uninit: function() {
-      window.removeEventListener('blur', onBlur, true);
-      window.removeEventListener('focus', onFocus, true);
-      window.removeEventListener('keyup', onKeyUp);
-      window.removeEventListener('keydown', onKeyDown);
       SpatialNavigation.clear();
       _idPool = 0;
       _ready = false;
