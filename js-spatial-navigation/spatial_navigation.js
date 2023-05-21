@@ -749,14 +749,19 @@
 
   function focusNext(direction, currentFocusedElement, currentSectionId) {
     var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
+    console.log("prevElem ",prevElem);
         if (prevElem !== null) {
             prevElem.style.background = "";
             prevElem.style.border = "";
+          console.log("prevElem again ",prevElem);
         }
     var extSelector =
       currentFocusedElement.getAttribute('data-sn-' + direction);
+    console.log("currentFocusedElement ",currentFocusedElement);
     currentFocusedElement.style.background = "yellow";
     currentFocusedElement.style.border = "thick solid #0000FF";
+    console.log("currentFocusedElement again ",currentFocusedElement);
+    
     if (typeof extSelector === 'string') {
       if (extSelector === '' ||
           !focusExtendedSelector(extSelector, direction)) {
@@ -778,6 +783,7 @@
     var next;
 
     if (config.restrict == 'self-only' || config.restrict == 'self-first') {
+      console.log("don't navigate");
       var currentSectionNavigableElements =
         sectionNavigableElements[currentSectionId];
 
@@ -797,6 +803,7 @@
         );
       }
     } else {
+      console.log("navigate");
       next = navigate(
         currentFocusedElement,
         direction,
