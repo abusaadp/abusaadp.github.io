@@ -487,11 +487,13 @@
       if (activeElement && activeElement !== document.body) {
           return activeElement;
       } else {
-          //var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-          //prevElem.focus();
-          //return prevElem;
+          var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
+          if (prevElem !== null) {
+              prevElem.focus();
+              console.log("return prevElem is ", prevElem);
+              return prevElem;
+          }
       }
-      console.log("return null");
   }
 
   function extend(out) {
