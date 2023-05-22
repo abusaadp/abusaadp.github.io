@@ -484,16 +484,14 @@
   function getCurrentFocusedElement() {
       var activeElement = document.activeElement;
       console.log("activeElement is ", activeElement);
-    if (activeElement && activeElement !== document.body) {
-      return activeElement;
-    } else {
-      var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-      if(prevElem !== null) {
-        prevElem.focus();
-        console.log("return prevElem is ", prevElem);
-        return prevElem;
+      if (activeElement && activeElement !== document.body) {
+          return activeElement;
+      } else {
+          //var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
+          //prevElem.focus();
+          //return prevElem;
       }
-    }
+      console.log("return null");
   }
 
   function extend(out) {
@@ -597,13 +595,19 @@
       return false;
     }
 
+      console.log("focusElement ");
     var currentFocusedElement = getCurrentFocusedElement();
 
-    var silentFocus = function() {
+      var silentFocus = function () {
+          console.log("silent Focus ", currentFocusedElement);
       if (currentFocusedElement) {
         currentFocusedElement.blur();
+        currentFocusedElement.style.background = "";
+        currentFocusedElement.style.border = "";
       }
       elem.focus();
+      elem.style.background = "yellow";
+      elem.style.border = "thick solid #0000FF";
       focusChanged(elem, sectionId);
     };
 
@@ -632,6 +636,8 @@
         return false;
       }
       currentFocusedElement.blur();
+      currentFocusedElement.style.background = "";
+      currentFocusedElement.style.border = "";
       fireEvent(currentFocusedElement, 'unfocused', unfocusProperties, false);
     }
 
@@ -646,6 +652,8 @@
       return false;
     }
     elem.focus();
+    elem.style.background = "yellow";
+    elem.style.border = "thick solid #0000FF";
     fireEvent(elem, 'focused', focusProperties, false);
 
     _duringFocusChange = false;
@@ -753,21 +761,18 @@
     return false;
   }
 
-  function focusNext(direction, currentFocusedElement, currentSectionId) {
-    var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-    console.log("prevElem ",prevElem);
+    function focusNext(direction, currentFocusedElement, currentSectionId) {
+        /*var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
         if (prevElem !== null) {
             prevElem.style.background = "";
             prevElem.style.border = "";
-          console.log("prevElem again ",prevElem);
-        }
+        }*/
+        
     var extSelector =
-      currentFocusedElement.getAttribute('data-sn-' + direction);
-    console.log("currentFocusedElement ",currentFocusedElement);
-    currentFocusedElement.style.background = "yellow";
-    currentFocusedElement.style.border = "thick solid #0000FF";
-    console.log("currentFocusedElement again ",currentFocusedElement);
-    
+        currentFocusedElement.getAttribute('data-sn-' + direction);
+      //currentFocusedElement.style.background = "yellow";
+      //currentFocusedElement.style.border = "thick solid #0000FF";
+      console.log("focusNext ", currentFocusedElement);
     if (typeof extSelector === 'string') {
       if (extSelector === '' ||
           !focusExtendedSelector(extSelector, direction)) {
@@ -789,7 +794,6 @@
     var next;
 
     if (config.restrict == 'self-only' || config.restrict == 'self-first') {
-      console.log("don't navigate");
       var currentSectionNavigableElements =
         sectionNavigableElements[currentSectionId];
 
@@ -809,7 +813,6 @@
         );
       }
     } else {
-      console.log("navigate");
       next = navigate(
         currentFocusedElement,
         direction,
@@ -916,8 +919,8 @@
     }
 
       
-      currentFocusedElement.style.background = "";
-      currentFocusedElement.style.border = "";
+      //currentFocusedElement.style.background = "";
+      //currentFocusedElement.style.border = "";
 
       console.log("background normal for ", currentFocusedElement);
 
@@ -948,7 +951,6 @@
     var currentFocusedElement = getCurrentFocusedElement();
     console.log(currentFocusedElement);
 
-    currentFocusedElement = getCurrentFocusedElement();
     if (currentFocusedElement && getSectionId(currentFocusedElement)) {
         if (!fireEvent(currentFocusedElement, 'enter-down')) {
             return preventDefault();
@@ -957,9 +959,10 @@
   }
 
   function onFocus(evt) {
-    var target = evt.target;
-    console.log("onFocus ", target);
-    
+      var target = evt.target;
+      console.log("onFocus ", target);
+      
+      
     if (target !== window && target !== document &&
         _sectionCount && !_duringFocusChange) {
         
@@ -1188,8 +1191,10 @@
         return false;
       }
 
+        console.log("move ", direction);
       var elem = selector ?
-        parseSelector(selector)[0] : getCurrentFocusedElement();
+            parseSelector(selector)[0] : getCurrentFocusedElement();
+        console.log("element is ", elem);
       if (!elem) {
         return false;
       }
