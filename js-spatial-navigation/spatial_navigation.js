@@ -488,9 +488,11 @@
       return activeElement;
     } else {
       var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-      prevElem.focus();
-      console.log("return prevElem is ", prevElem);
-      return prevElem;
+      if(prevElem !== null) {
+        prevElem.focus();
+        console.log("return prevElem is ", prevElem);
+        return prevElem;
+      }
     }
   }
 
