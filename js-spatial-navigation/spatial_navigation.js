@@ -600,6 +600,7 @@
       }
       elem.style.background = "yellow";
       elem.style.border = "thick solid #0000FF";
+      elem.focus();
       focusChanged(elem, sectionId);
     };
 
@@ -645,6 +646,7 @@
     }
     elem.style.background = "yellow";
     elem.style.border = "thick solid #0000FF";
+    elem.focus();
     fireEvent(elem, 'focused', focusProperties, false);
 
     _duringFocusChange = false;
