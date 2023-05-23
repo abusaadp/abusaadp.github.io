@@ -482,18 +482,10 @@
     }
 
     function getCurrentFocusedElement() {
-        var activeElement = document.activeElement;
-        console.log("activeElement is ", activeElement);
-        if (activeElement && activeElement !== document.body) {
-            return activeElement;
-        } else {
-            var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-            if (prevElem !== null) {
-                prevElem.focus();
-                console.log("return prevElem is ", prevElem);
-                return prevElem;
-            }
-        }
+      var activeElement = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
+      if (activeElement && activeElement !== document.body) {
+          return activeElement;
+      }
     }
 
     function extend(out) {
