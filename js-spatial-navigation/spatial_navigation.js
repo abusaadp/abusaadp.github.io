@@ -482,17 +482,9 @@
   }
 
   function getCurrentFocusedElement() {
-      var activeElement = document.activeElement;
-      console.log("activeElement is ", activeElement);
+      var activeElement = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
       if (activeElement && activeElement !== document.body) {
           return activeElement;
-      } else {
-          var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-          if (prevElem !== null) {
-              prevElem.focus();
-              console.log("return prevElem is ", prevElem);
-              return prevElem;
-          }
       }
   }
 
@@ -597,17 +589,14 @@
       return false;
     }
 
-      console.log("focusElement ");
     var currentFocusedElement = getCurrentFocusedElement();
 
-      var silentFocus = function () {
-          console.log("silent Focus ", currentFocusedElement);
+    var silentFocus = function () {
       if (currentFocusedElement) {
         currentFocusedElement.blur();
         currentFocusedElement.style.background = "";
         currentFocusedElement.style.border = "";
       }
-      elem.focus();
       elem.style.background = "yellow";
       elem.style.border = "thick solid #0000FF";
       focusChanged(elem, sectionId);
@@ -653,7 +642,6 @@
       _duringFocusChange = false;
       return false;
     }
-    elem.focus();
     elem.style.background = "yellow";
     elem.style.border = "thick solid #0000FF";
     fireEvent(elem, 'focused', focusProperties, false);
@@ -763,18 +751,10 @@
     return false;
   }
 
-    function focusNext(direction, currentFocusedElement, currentSectionId) {
-        /*var prevElem = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-        if (prevElem !== null) {
-            prevElem.style.background = "";
-            prevElem.style.border = "";
-        }*/
+  function focusNext(direction, currentFocusedElement, currentSectionId) {
         
     var extSelector =
         currentFocusedElement.getAttribute('data-sn-' + direction);
-      //currentFocusedElement.style.background = "yellow";
-      //currentFocusedElement.style.border = "thick solid #0000FF";
-      console.log("focusNext ", currentFocusedElement);
     if (typeof extSelector === 'string') {
       if (extSelector === '' ||
           !focusExtendedSelector(extSelector, direction)) {
@@ -865,149 +845,11 @@
     return false;
   }
 
-  function onKeyDown(evt) {
-    if (!_sectionCount || _pause ||
-        evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
-      return;
-    }
-
-    var currentFocusedElement;
-    var preventDefault = function() {
-      evt.preventDefault();
-      evt.stopPropagation();
-      return false;
-    };
-
-    var direction = KEYMAPPING[evt.keyCode];
-    if (!direction) {
-      if (evt.keyCode == 13) {
-        currentFocusedElement = getCurrentFocusedElement();
-        if (currentFocusedElement && getSectionId(currentFocusedElement)) {
-          if (!fireEvent(currentFocusedElement, 'enter-down')) {
-            return preventDefault();
-          }
-        }
-      }
-      return;
-    }
-
-      currentFocusedElement = getCurrentFocusedElement();
-      console.log(currentFocusedElement);
-      
-    if (!currentFocusedElement) {
-      if (_lastSectionId) {
-        currentFocusedElement = getSectionLastFocusedElement(_lastSectionId);
-      }
-      if (!currentFocusedElement) {
-          focusSection();
-          console.log("")
-        return preventDefault();
-      }
-    }
-
-    var currentSectionId = getSectionId(currentFocusedElement);
-    if (!currentSectionId) {
-      return;
-    }
-
-    var willmoveProperties = {
-      direction: direction,
-      sectionId: currentSectionId,
-      cause: 'keydown'
-    };
-
-    if (fireEvent(currentFocusedElement, 'willmove', willmoveProperties)) {
-      focusNext(direction, currentFocusedElement, currentSectionId);
-    }
-
-      
-      //currentFocusedElement.style.background = "";
-      //currentFocusedElement.style.border = "";
-
-      console.log("background normal for ", currentFocusedElement);
-
-
-    return preventDefault();
-  }
-
-  function onKeyUp(evt) {
-    if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
-      return;
-    }
-    if (!_pause && _sectionCount && evt.keyCode == 13) {
-      var currentFocusedElement = getCurrentFocusedElement();
-      if (currentFocusedElement && getSectionId(currentFocusedElement)) {
-        if (!fireEvent(currentFocusedElement, 'enter-up')) {
-          evt.preventDefault();
-          evt.stopPropagation();
-        }
-      }
-    }
-  }
-
   function enterCustom() {
-
-    var preventDefault = function () {
-        return false;
-    };
     var currentFocusedElement = getCurrentFocusedElement();
-    console.log(currentFocusedElement);
-
+    
     if (currentFocusedElement && getSectionId(currentFocusedElement)) {
-        if (!fireEvent(currentFocusedElement, 'enter-down')) {
-            return preventDefault();
-        }
-    }
-  }
-
-  function onFocus(evt) {
-      var target = evt.target;
-      console.log("onFocus ", target);
-      
-      
-    if (target !== window && target !== document &&
-        _sectionCount && !_duringFocusChange) {
-        
-      var sectionId = getSectionId(target);
-      if (sectionId) {
-        if (_pause) {
-          focusChanged(target, sectionId);
-          return;
-        }
-
-        var focusProperties = {
-          sectionId: sectionId,
-          native: true
-        };
-
-        if (!fireEvent(target, 'willfocus', focusProperties)) {
-          _duringFocusChange = true;
-          target.blur();
-          _duringFocusChange = false;
-        } else {
-          fireEvent(target, 'focused', focusProperties, false);
-          focusChanged(target, sectionId);
-        }
-      }
-    }
-  }
-
-  function onBlur(evt) {
-   var target = evt.target;
-   if (target !== window && target !== document && !_pause &&
-        _sectionCount && !_duringFocusChange && getSectionId(target)) {
-      var unfocusProperties = {
-        native: true
-      };
-      if (!fireEvent(target, 'willunfocus', unfocusProperties)) {
-        _duringFocusChange = true;
-        setTimeout(function() {
-          target.focus();
-          _duringFocusChange = false;
-        });
-      } else {
-        fireEvent(target, 'unfocused', unfocusProperties, false);
-      }
+      currentFocusedElement.click();
     }
   }
 
@@ -1193,10 +1035,8 @@
         return false;
       }
 
-        console.log("move ", direction);
       var elem = selector ?
             parseSelector(selector)[0] : getCurrentFocusedElement();
-        console.log("element is ", elem);
       if (!elem) {
         return false;
       }
