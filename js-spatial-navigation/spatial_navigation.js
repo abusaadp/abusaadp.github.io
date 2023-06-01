@@ -486,7 +486,7 @@
       if (activeElement && activeElement !== document.body) {
           return activeElement;
       } else {
-        activeElement = document.querySelector('[style="display: none; background: yellow; border: thick solid rgb(0, 0, 255);"]');
+        activeElement = document.getElementById("spatial_navigation_dummy");
         return activeElement;
       }
   }
