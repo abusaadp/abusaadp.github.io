@@ -483,9 +483,10 @@
 
   function getCurrentFocusedElement() {
       var activeElement = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
-      console.log("activeElement is ", activeElement);
       if (activeElement && activeElement !== document.body) {
           return activeElement;
+      } else {
+        return document.body.firstChild;
       }
   }
 
