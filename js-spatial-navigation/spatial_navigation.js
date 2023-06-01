@@ -485,6 +485,9 @@
       var activeElement = document.querySelector('[style="background: yellow; border: thick solid rgb(0, 0, 255);"]');
       if (activeElement && activeElement !== document.body) {
           return activeElement;
+      } else {
+        activeElement = document.querySelector('[style="display:none; background: yellow; border: thick solid rgb(0, 0, 255);"]');
+        return activeElement;
       }
   }
 
